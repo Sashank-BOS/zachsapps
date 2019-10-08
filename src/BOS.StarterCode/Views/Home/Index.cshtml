@@ -1,0 +1,369 @@
+﻿@using BOS.StarterCode.Helpers;
+
+@model dynamic;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script type="text/javascript">
+
+    var Model=@JavaScriptConvert.SerializeObject(Model);
+    Model.Role =@(JavaScriptConvert.SerializeObject(User.FindFirst(c => c.Type == "Role").Value.ToString()));
+    @{
+        var UserRole = User.FindFirst(c => c.Type == "Role").Value.ToString();
+        var IsuserAllowed = UserRole.Contains("Admin");
+     }
+
+</script>
+
+<div class="page-wrapper BOS-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">
+                    <img src="../images/logo.png" />
+                </a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
+                    <strong>@Model.Username</strong>
+                    <span class="user-role">@Model.Roles</span>
+                    <span class="user-status">
+                        <i class="fa fa-circle"></i>
+                        <span>Online</span>
+                    </span>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <ul id="navigation-tree">
+                    @*<li>
+                            <a href="#">
+                                <i class="fa fa-tachometer-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="far fa-user"></i>
+                                <span>Users</span>
+                                <span class="badge badge-pill badge-success">3</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            Something
+
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Some Other Thing</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Some Thing Else</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>*@
+
+                    @foreach (var module in Model.Modules)
+                    {
+                        @if (module.ChildModules.Count == 0)
+                        {
+                            if (@module.Code != "PRMNS")
+                            {
+                                <li>
+                                    <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                        <i class="fa fa-tachometer-alt"></i>
+                                        <span>@module.Name</span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="sidebar-dropdown">
+                                <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                    <i class="far fa-user"></i>
+                                    <span>@module.Name</span>
+                                </a>
+
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        @foreach (var submodule in module.ChildModules)
+                                        {
+                                            <li>
+                                                <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                                    @module.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="#">
+                <i class="fa fa-power-off" onclick="InitiateLogout();"></i>
+            </a>
+        </div>
+    </nav>
+
+    <h1>Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h4 style="color:#dc8212d9">The Dashboard page comes here</h4>
+        </div>
+    </div>
+    @*<main class="page-content">
+            <div class="container-fluid">
+                <h1>Page Title</h1>
+                <div class="row mt-5">
+                    <div class="col-sm-3">
+                        <nav class="nav" role="navigation">
+                            <ul class="nav__list">
+                                <li>
+                                    <input id="group-1" type="checkbox" hidden />
+                                    <label for="group-1"><span class="fa fa-angle-right"></span> First level</label>
+                                    <ul class="group-list">
+                                        <li><a href="#">1st level item</a></li>
+                                        <li>
+                                            <input id="sub-group-1" type="checkbox" hidden />
+                                            <label for="sub-group-1"><span class="fa fa-angle-right"></span> Second level</label>
+                                            <ul class="sub-group-list">
+                                                <li><a href="#">2nd level nav item</a></li>
+                                                <li><a href="#">2nd level nav item</a></li>
+                                                <li><a href="#">2nd level nav item</a></li>
+                                                <li>
+                                                    <input id="sub-sub-group-1" type="checkbox" hidden />
+                                                    <label for="sub-sub-group-1"><span class="fa fa-angle-right"></span> Third level</label>
+                                                    <ul class="sub-sub-group-list">
+                                                        <li><a href="#">3rd level nav item</a></li>
+                                                        <li><a href="#">3rd level nav item</a></li>
+                                                        <li><a href="#">3rd level nav item</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <input id="group-2" type="checkbox" hidden />
+                                    <label for="group-2"><span class="fa fa-angle-right"></span> First level</label>
+                                    <ul class="group-list">
+                                        <li>
+                                        <li><a href="#">1st level item</a></li>
+                                        <li><a href="#">1st level item</a></li>
+                                        <input id="sub-group-2" type="checkbox" hidden />
+                                        <label for="sub-group-2"><span class="fa fa-angle-right"></span> Second level</label>
+                                        <ul class="sub-group-list">
+                                            <li><a href="#">2nd level nav item</a></li>
+                                            <li><a href="#">2nd level nav item</a></li>
+                                            <li>
+                                                <input id="sub-sub-group-2" type="checkbox" hidden />
+                                                <label for="sub-sub-group-2"><span class="fa fa-angle-right"></span> Third level</label>
+                                                <ul class="sub-sub-group-list">
+                                                    <li><a href="#">3rd level nav item</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                </li>
+                            </ul>
+                            </li>
+                            <li>
+                                <input id="group-3" type="checkbox" hidden />
+                                <label for="group-3"><span class="fa fa-angle-right"></span> First level</label>
+                                <ul class="group-list">
+                                    <li>
+                                    <li><a href="#">1st level item</a></li>
+                                    <li><a href="#">1st level item</a></li>
+                                    <input id="sub-group-3" type="checkbox" hidden />
+                                    <label for="sub-group-3"><span class="fa fa-angle-right"></span> Second level</label>
+                                    <ul class="sub-group-list">
+                                        <li><a href="#">2nd level nav item</a></li>
+                                        <li><a href="#">2nd level nav item</a></li>
+                                        <li><a href="#">2nd level nav item</a></li>
+                                        <li>
+                                            <input id="sub-sub-group-3" type="checkbox" hidden />
+                                            <label for="sub-sub-group-3"><span class="fa fa-angle-right"></span> Third level</label>
+                                            <ul class="sub-sub-group-list">
+                                                <li><a href="#">3rd level nav item</a></li>
+                                                <li><a href="#">3rd level nav item</a></li>
+                                                <li><a href="#">3rd level nav item</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                            </li>
+                            </ul>
+                            </li>
+                            <li>
+                                <input id="group-4" type="checkbox" hidden />
+                                <label for="group-4"><span class="fa fa-angle-right"></span> First level</label>
+                                <ul class="group-list">
+                                    <li>
+                                    <li><a href="#">1st level item</a></li>
+                                    <input id="sub-group-4" type="checkbox" hidden />
+                                    <label for="sub-group-4"><span class="fa fa-angle-right"></span> Second level</label>
+                                    <ul class="sub-group-list">
+                                        <li><a href="#">2nd level nav item</a></li>
+                                        <li><a href="#">2nd level nav item</a></li>
+                                    </ul>
+                            </li>
+                            </ul>
+                            </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="table-responsive">
+                            <table class="table user_table">
+                                <thead>
+                                    <tr>
+                                        <th>FIRST NAME</th>
+                                        <th>LAST NAME</th>
+                                        <th>USERNAME</th>
+                                        <th>EMAIL</th>
+                                        <th>ROLES</th>
+                                        <th>EDITED/ADDED</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Manoj</td>
+                                        <td>Khiyani</td>
+                                        <td>Manoj@khiyani.com</td>
+                                        <td>Manoj@khiyani.com</td>
+                                        <td>2</td>
+                                        <td>Sep 1, 2019</td>
+                                        <td>
+                                            <i class="fas fa-ellipsis-v position-relative pointer" id="show_action_div">
+                                                <div class="action_div" id="action_div">
+                                                    <ul>
+                                                        <li><a href="#">Edit</a></li>
+                                                        <li><a href="#">Change Password</a></li>
+                                                        <li><a href="#">Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </i>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Manoj</td>
+                                        <td>Khiyani</td>
+                                        <td>Manoj@khiyani.com</td>
+                                        <td>Manoj@khiyani.com</td>
+                                        <td>2</td>
+                                        <td>Sep 1, 2019</td>
+                                        <td><i class="fas fa-ellipsis-v"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Manoj</td>
+                                        <td>Khiyani</td>
+                                        <td>Manoj@khiyani.com</td>
+                                        <td>Manoj@khiyani.com</td>
+                                        <td>2</td>
+                                        <td>Sep 1, 2019</td>
+                                        <td><i class="fas fa-ellipsis-v"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>*@
+</div>
+
+<script type="text/javascript">
+    $(document).mouseup(function (e) {
+        var container = $("#action_div");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.hide();
+        }
+    });
+    $(function () {
+        $('#show_action_div').click(function () {
+            $('#action_div').show();
+            return false;
+        });
+    });
+    jQuery(function ($) {
+
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
+
+        $("#close-sidebar").click(function () {
+            $(".page-wrapper").removeClass("toggled");
+        });
+        $("#show-sidebar").click(function () {
+            $(".page-wrapper").addClass("toggled");
+        });
+    });
+
+    function InitiateLogout() {
+        DisplayConfirmationDialog({
+            Message: "Are you sure you want to logout?",
+            CallFrom: "Logout",
+            OkData: { Label: "Yes", Data: null },
+            CancelData: { Label: "No", Data: null }
+        });
+    }
+
+    //$(document).ready(function (e) {
+    //    debugger;
+    //    $("#navigation-tree li a").first()[0].trigger('click');
+    //});
+
+</script>

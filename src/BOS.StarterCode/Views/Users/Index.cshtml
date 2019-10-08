@@ -1,0 +1,292 @@
+﻿
+@using BOS.StarterCode.Helpers;
+
+
+@model dynamic;
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<script type="text/javascript">
+
+        var Model=@JavaScriptConvert.SerializeObject(Model);
+        Model.Role =@(JavaScriptConvert.SerializeObject(User.FindFirst(c => c.Type == "Role").Value.ToString()));
+        @{
+            var UserRole = User.FindFirst(c => c.Type == "Role").Value.ToString();
+            var IsuserAllowed = UserRole.Contains("Admin");
+         }
+
+</script>
+
+<div class="page-wrapper BOS-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">
+                    <img src="../images/logo.png" />
+                </a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
+                    <strong>@Model.Username</strong>
+                    <span class="user-role">@Model.Roles</span>
+                    <span class="user-status">
+                        <i class="fa fa-circle"></i>
+                        <span>Online</span>
+                    </span>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    @foreach (var module in Model.Modules)
+                    {
+                        @if (module.ChildModules.Count == 0)
+                        {
+                            if (@module.Code != "PRMNS")
+                            {
+                                <li>
+                                    <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                        <i class="fa fa-tachometer-alt"></i>
+                                        <span>@module.Name</span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="sidebar-dropdown">
+                                <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                    <i class="far fa-user"></i>
+                                    <span>@module.Name</span>
+                                </a>
+
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        @foreach (var submodule in module.ChildModules)
+                                        {
+                                            <li>
+                                                <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                                    @module.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                            </li>
+                        }
+
+                    }
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="#">
+                <i class="fa fa-power-off" onclick="InitiateLogout();"></i>
+            </a>
+        </div>
+    </nav>
+
+    <h1>Users</h1>
+
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <form>
+                <div class="row">
+                    <div class="form-group">
+                        <button class="btn btn-primary d-block w-100" style="margin-left: 10px" asp-action="AddNewUser">Add User</button>
+                    </div>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table user_table" id="tableUsers">
+                    <thead>
+                        <tr>
+                            <th>FIRST NAME</th>
+                            <th>LAST NAME</th>
+                            <th>USERNAME</th>
+                            <th>EMAIL</th>
+                            <th>ROLES</th>
+                            <th>ADDED ON</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            @foreach (var user in Model.UserList)
+                            {
+                                <tr id="@user.UpdatedId">
+                                    <td>@user.FirstName</td>
+                                    <td>@user.LastName</td>
+                                    <td>@user.Username</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.Roles.Count</td>
+                                    <td>@user.CreatedOn</td>
+                                    <td>
+                                        <div class="fas fa-ellipsis-v position-relative pointer" id="userrow__@user.UpdatedId" onclick="OnUserRowActionClicked(this); return false;">
+                                            <div class="action_div" id="action_div__@user.UpdatedId">
+                                                <ul>
+                                                    <li><a href="#" id="@user.UpdatedId" onclick="OnUserEditClicked(this); return false">Edit</a></li>
+                                                    <li><a href="#" id="@user.UpdatedId" onclick="OnChangePasswordClicked(this); return false">Change Password</a></li>
+                                                    <li><a href="#" id="@user.UpdatedId" onclick="OnUserDeleteClicked(this); return false">Delete</a></li>
+                                                    @* @Html.ActionLink("Editsss", "EditUser", new { /* userId = @user.UpdatedId */ })
+
+                                                        <li><a asp-action="EditUser" asp-route-userid="sdsdsdsdsdsds">Testing ASP ACTION LINK INSIDE A TABLE</a></li>
+
+                                                        <li>@Html.ActionLink("Edit plez", "EditUser", "Users", new { userId = @user.UpdatedId }, null) </li>
+
+                                                        <a href="/Users/EditUSer?userid=@user.UpdatedId">Download</a>*@
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <a id="hiddenUserEdit" href="" class="none"></a>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Set Password</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-sm-12">
+                    <div class="position-relative">
+                        <label class="control-label">Password</label>
+                        <input class="form-control" type="password" placeholder="Enter password" id="password" required />
+                    </div>
+                </div>
+                <br />
+                <div class="col-sm-12">
+                    <div class="position-relative">
+                        <label class="control-label">Confirm Password</label>
+                        <input class="form-control" type="password" placeholder="Retype the password" id="confirmpassword" required />
+                        <span id='message'></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="SetPassword(); return false;">Set</button>
+            </div>
+        </div>
+        <input type="hidden" id="hiddenUserIdChangePwd" />
+    </div>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                DisplayDialog({ Success: true, Message: '@ViewBag.Message' });
+            });
+        });
+    </script>
+}
+<script type="text/javascript">
+    $('#confirmpassword').on('keyup', function () {
+        if ($('#password').val() == $('#confirmpassword').val()) {
+            $('#message').html('');
+        } else
+            $('#message').html('Not Matching').css('color', 'red');
+    });
+
+
+    $(document).mouseup(function (e) {
+        var container = $("#action_div");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.hide();
+        }
+        $(".action_div").hide();
+    });
+
+    $(function () {
+        $('#show_action_div').click(function () {
+            $('#action_div').show();
+            return false;
+        });
+    });
+
+
+    jQuery(function ($) {
+
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
+
+        $("#close-sidebar").click(function () {
+            $(".page-wrapper").removeClass("toggled");
+        });
+
+        $("#show-sidebar").click(function () {
+            $(".page-wrapper").addClass("toggled");
+        });
+    });
+
+    function OnUserRowActionClicked(row) {
+        var selectedId = row.id.split('__')[1];
+        var selectedElement = document.getElementById("action_div__" + selectedId);
+        if (selectedElement.style.display === "none") {
+            selectedElement.style.display = "block";
+        } else {
+            selectedElement.style.display = "none";
+        }
+        // $("#action_div__" + selectedId).toggle();
+    }
+</script>

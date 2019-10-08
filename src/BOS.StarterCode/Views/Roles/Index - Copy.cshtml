@@ -1,0 +1,1755 @@
+﻿
+@using BOS.StarterCode.Helpers;
+
+@model dynamic;
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<script type="text/javascript">
+
+        var Model=@JavaScriptConvert.SerializeObject(Model);
+        Model.Role =@(JavaScriptConvert.SerializeObject(User.FindFirst(c => c.Type == "Role").Value.ToString()));
+        @{
+            var UserRole = User.FindFirst(c => c.Type == "Role").Value.ToString();
+            var IsuserAllowed = UserRole.Contains("Admin");
+         }
+
+</script>
+
+<div class="page-wrapper BOS-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">
+                    <img src="../images/logo.png" />
+                </a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
+                    <strong>@Model.Username</strong>
+                    <span class="user-role">@Model.Roles</span>
+                    <span class="user-status">
+                        <i class="fa fa-circle"></i>
+                        <span>Online</span>
+                    </span>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    @foreach (var module in Model.Modules)
+                    {
+                        @if (module.ChildModules.Count == 0)
+                        {
+                            <li>
+                                <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                    <i class="fa fa-tachometer-alt"></i>
+                                    <span>@module.Name</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-dropdown">
+                                <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                    <i class="far fa-user"></i>
+                                    <span>@module.Name</span>
+                                </a>
+
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        @foreach (var submodule in module.ChildModules)
+                                        {
+                                            <li>
+                                                <a asp-action="NavigateToModule" asp-route-id="@module.Id" asp-route-code="@module.Code" asp-route-isdefault="@module.IsDefault">
+                                                    @module.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <div class="sidebar-footer">
+            <a href="#">
+                <i class="fa fa-bell"></i>
+                <span class="badge badge-pill badge-warning notification">3</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span class="badge badge-pill badge-success notification">7</span>
+            </a>
+            <a href="#">
+                <i class="fa fa-cog"></i>
+                <span class="badge-sonar"></span>
+            </a>
+            <a href="#">
+                <i class="fa fa-power-off" onclick="InitiateLogout();"></i>
+            </a>
+        </div>
+    </nav>
+
+    <h1>Roles</h1>
+
+    <div class="row">
+        <div class="col-md-12" style="color:#b1c8e0">
+            <h4>The roles page comes here</h4>
+        </div>
+        <div class="col-md-12">
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Name
+                        </th>
+                        <th scope="col">
+                            Description
+                        </th>
+                        <th scope="col">Edited/Added</th>
+                        <th scope="col">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="0cf80c38-8735-4ef3-b971-f37fc4c52218">
+                        <td class="align-middle">SUPER ADMIN</td>
+                        <td class="align-middle">
+                            &nbsp;
+                        </td>
+                        <td>
+                            Oct 3, 2019
+                            <div>Oct 3, 2019</div>
+                        </td>
+                        <td class="text-right position-relative">
+
+                            <i class="dropdown-toggle fas fa-ellipsis-v" data-toggle="dropdown" role="button"></i>
+
+                        </td>
+                    </tr>
+                    <tr id="e3d74034-1f77-4dc7-aac4-840ccb4ed9ad">
+                        <td class="align-middle">ADMIN</td>
+                        <td class="align-middle">
+                            &nbsp;
+                        </td>
+                        <td>
+                            Oct 3, 2019
+                            <div>Oct 3, 2019</div>
+                        </td>
+                        <td class="text-right position-relative">
+
+                            <i class="dropdown-toggle fas fa-ellipsis-v" data-toggle="dropdown" role="button"></i>
+                        </td>
+                    </tr>
+                    <tr id="ff2b5da1-0606-4e3d-b2a9-982efb197e44">
+                        <td class="align-middle">USER</td>
+                        <td class="align-middle">
+                            &nbsp;
+                        </td>
+                        <td>
+                            Oct 3, 2019
+                            <div>Oct 3, 2019</div>
+                        </td>
+                        <td class="text-right position-relative">
+                            <i class="dropdown-toggle fas fa-ellipsis-v" data-toggle="dropdown" role="button"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <style type="text/css">
+                                .js_op_container {
+                                    list-style-type: none;
+                                    padding-left: 10px;
+                                }
+
+                                .js_operation, .js_module {
+                                    list-style-type: none;
+                                }
+
+                                .js_module_container {
+                                    list-style-type: none;
+                                    padding-left: 10px;
+                                }
+
+                                .list-group-item.active {
+                                    z-index: 2;
+                                    color: #fff;
+                                    background-color: #1d1c1d;
+                                    border-color: #f4f5f7;
+                                }
+
+                                    .list-group-item.active a {
+                                        color: #fff;
+                                    }
+
+                                .list-group-item a {
+                                    color: #000000;
+                                }
+                            </style>
+                            <div class="col-md-12" id="main">
+                                <div class="row">
+                                    <div class="col-md-6 p-0">
+                                        <h4 class="pt-2">
+                                            User Permissions
+                                            <span id="view-edit-toggle">
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                    <label class="btn btn-secondary btn-sm active" onclick="viewClick(this);" style="cursor:pointer;">
+                                                        <input type="radio" name="options" id="option1" autocomplete="off" checked=""> View
+                                                    </label>
+                                                    <label class="btn btn-secondary btn-sm" onclick="editClick(this);" style="cursor:pointer;">
+                                                        <input type="radio" name="options" id="option2" autocomplete="off"> Edit
+                                                    </label>
+                                                </div>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-6 p-0 text-right">
+                                        <a class="btn btn-primary" href="/Project/Tenants/d1dbb165-9bdd-4ec8-887a-74cfda8f934c"> Back to Tenants</a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <!-- Custom Coding Starts Here -->
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-3 p-0">
+                                                <ul class="nav nav-tabs" id="myTab" role="tablist"></ul>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 mt-3">
+                                                <input type="hidden" id="userId" value="12dbc54f-baff-494d-89be-9d8f2079b26e">
+                                                <div class="users_listingid=" permissions-list">
+                                                    <ul>
+                                                        <h4 class="pl-2 pr-2 pt-2 pb-2 text-center">Users</h4>
+                                                        <li>
+                                                            <a class="active" id="12dbc54f-baff-494d-89be-9d8f2079b26e" lastname="C" firstname="12345678Amit" roles="Super Admin" href="/Permissions/FetchRolePermissions?id=12dbc54f-baff-494d-89be-9d8f2079b26e&amp;name=12345678Amit%20C&amp;mode=user&amp;operation=view"> <i class="far fa-user" aria-hidden="true"></i> 12345678Amit C </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9 pl-4">
+                                                <div class="user_details">
+                                                    <div class="row">
+                                                        <div class="col-md-12 mt-3">
+                                                            <div class="display-inline float-right operations">
+                                                                <a href="#" class="ui-in-page" onclick="expand();" id="expandAll"><i class="fas fa-angle-down" aria-hidden="true"></i> Expand</a>
+                                                                <a href="#" class="ui-in-page  d-none" onclick="collapse();" id="collapseAll"><i class="fas fa-angle-up" aria-hidden="true"></i> Collapse</a>
+                                                            </div>
+                                                            <div class="display-inline float-right operations mr-4">
+                                                                <i class="fas fa-cog" aria-hidden="true"></i> Operations
+                                                            </div>
+                                                            <div class="display-inline float-right modules mr-4">
+                                                                <i class="fas fa-cube" aria-hidden="true"></i> Modules
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 mt-4">
+                                                            <h4>Modules &amp; Permissions</h4>
+                                                            <div class="row mt-4" id="modules">
+                                                                <ul class="modules-list-edit">
+                                                                    <li class="module js_module js_module_child">
+                                                                        <div class="li-body">
+                                                                            <div class="col-sm-12">
+                                                                                <div class="modules">
+                                                                                    <input class="d-none" disabled="" id="4a851397-73d1-4386-b71a-dedd9bd429ef" name="My Profile" code="MYPFL" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked" style="display:none">
+                                                                                    <label class="no_before_after" for="4a851397-73d1-4386-b71a-dedd9bd429ef"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cube" aria-hidden="true"></i> My Profile</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul class="mt-2 d-none js_op_container">
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="009c2759-9061-451f-9ce1-e61f504e8cac" opname="View" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="PVIEW" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="009c2759-9061-451f-9ce1-e61f504e8cac"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="1d98fe4b-222b-41da-9290-8c609dab322d" opname="Upload" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="PUPLD" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="1d98fe4b-222b-41da-9290-8c609dab322d"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Upload</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="9aa628cf-2141-43a9-9ec0-00d298776e4a" opname="Edit" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="PEDIT" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="9aa628cf-2141-43a9-9ec0-00d298776e4a"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="be2f24f5-aff5-4414-a06e-fd00ab4a0f47" opname="Change Password" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="CHPWD" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="be2f24f5-aff5-4414-a06e-fd00ab4a0f47"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Change Password</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li class="module js_module js_module_child">
+                                                                        <div class="li-body">
+                                                                            <div class="col-sm-12">
+                                                                                <div class="modules">
+                                                                                    <input class="d-none" disabled="" id="63baad66-c856-4df4-b7ff-68ea3b45867f" name="User" code="USERS" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked" style="display:none">
+                                                                                    <label class="no_before_after" for="63baad66-c856-4df4-b7ff-68ea3b45867f"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cube" aria-hidden="true"></i> User</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul class="mt-2 d-none js_op_container">
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="13b56995-db20-4ea8-94ad-a7fa6cbf0ca4" opname="Details" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UDTLS" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="13b56995-db20-4ea8-94ad-a7fa6cbf0ca4"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Details</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="3b4a9218-21b2-45d1-a34a-b996942499c4" opname="View" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UVIEW" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="3b4a9218-21b2-45d1-a34a-b996942499c4"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="453061c9-a1f7-4c35-b76e-4598ea65a832" opname="Edit" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UEDIT" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="453061c9-a1f7-4c35-b76e-4598ea65a832"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="6b2aba5b-2ec3-44bd-8337-aad218e906fe" opname="Activate" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UACTV" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="6b2aba5b-2ec3-44bd-8337-aad218e906fe"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Activate</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="81cb6843-2b3c-4a03-a8ec-f3f0fc0104fa" opname="Delete" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UDLTE" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="81cb6843-2b3c-4a03-a8ec-f3f0fc0104fa"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Delete</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="97d3f211-9d1b-45ee-a423-0ed0317a2bba" opname="Deactivate" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UDACT" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="97d3f211-9d1b-45ee-a423-0ed0317a2bba"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Deactivate</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="cc7c595a-4325-421b-8fff-160ffd16e791" opname="Reset Password" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="RSPWD" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="cc7c595a-4325-421b-8fff-160ffd16e791"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Reset Password</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="d61cfbc3-6c57-4020-92f9-10584c546a7c" opname="Add" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UUADD" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="d61cfbc3-6c57-4020-92f9-10584c546a7c"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Add</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li class="module js_module js_module_child">
+                                                                        <div class="li-body">
+                                                                            <div class="col-sm-12">
+                                                                                <div class="modules">
+                                                                                    <input class="d-none" disabled="" id="a3688d07-b511-4999-8aab-b6fa25c6a563" name="Roles" code="ROLES" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked" style="display:none">
+                                                                                    <label class="no_before_after" for="a3688d07-b511-4999-8aab-b6fa25c6a563"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cube" aria-hidden="true"></i> Roles</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul class="mt-2 d-none js_op_container">
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="2e565a78-b3b3-4e46-94f5-dcc66d9280d2" opname="Delete" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RDLTE" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="2e565a78-b3b3-4e46-94f5-dcc66d9280d2"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Delete</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="33c4dba1-5f06-4840-838b-ba7503a3e017" opname="View" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RVIEW" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="33c4dba1-5f06-4840-838b-ba7503a3e017"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="8d111596-2673-4548-9cb1-01ed165b0486" opname="Details" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RDTLS" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="8d111596-2673-4548-9cb1-01ed165b0486"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Details</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="9a6bb141-c87a-4c76-9567-55b8a9c15f4e" opname="Activate" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RACTV" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="9a6bb141-c87a-4c76-9567-55b8a9c15f4e"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Activate</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="b66e367e-2e6a-431c-bae2-be2c3cc2a741" opname="Deactivate" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RDACT" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="b66e367e-2e6a-431c-bae2-be2c3cc2a741"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Deactivate</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="c56b5f93-e1f8-4ce2-8313-0f7b42ba3fef" opname="Add" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RRADD" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="c56b5f93-e1f8-4ce2-8313-0f7b42ba3fef"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Add</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="e1253c63-13b6-4e96-a0e2-5398a47e5a35" opname="Edit" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="REDIT" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="e1253c63-13b6-4e96-a0e2-5398a47e5a35"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li class="module js_module js_module_child">
+                                                                        <div class="li-body">
+                                                                            <div class="col-sm-12">
+                                                                                <div class="modules">
+                                                                                    <input class="d-none" disabled="" id="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" name="Permissions" code="PRMNS" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked" style="display:none">
+                                                                                    <label class="no_before_after" for="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cube" aria-hidden="true"></i> Permissions</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul class="mt-2 d-none js_op_container">
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="03e79e43-9dd1-4ea4-8322-598618993e72" opname="View" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PVIEW" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="03e79e43-9dd1-4ea4-8322-598618993e72"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="49b90e25-17be-4eca-9af8-67bf1eb96955" opname="Edit" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PEDIT" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="49b90e25-17be-4eca-9af8-67bf1eb96955"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="84b45de8-61e7-4f40-a973-4e2a2fd1a954" opname="Delete" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PDLTE" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="84b45de8-61e7-4f40-a973-4e2a2fd1a954"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Delete</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <li class="js_operation js_op_child">
+                                                                                <div class="li-body">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="checkboxwrapper operations">
+                                                                                            <input type="checkbox" disabled="" checked="checked" id="c25c1690-62f7-4a3b-841c-4a8bdb440bec" opname="Add" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PPADD" isdefault="isDefault" style="display:none">
+                                                                                            <label class="no_before_after" for="c25c1690-62f7-4a3b-841c-4a8bdb440bec"><i class="fas mr-2 fa-check-circle text-success" aria-hidden="true"></i><i class="fas fa-cog" aria-hidden="true"></i> Add</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <script type="text/javascript">
+                                setTimeout(function () {
+                                    $('#multi-select-roles').multiselect({
+                                        includeSelectAllOption: false,
+                                        onChange: function (option, checked, select) {
+
+                                            var roles = $('#multi-select-roles option:selected');
+                                            var selected = [];
+                                            $(roles).each(function (index, brand) {
+                                                selected.push($(this).val());
+                                            });
+                                            var selectedRoles = "";
+                                            for (var i = 0; i < selected.length; i++) {
+                                                selectedRoles = (selectedRoles != null && selectedRoles == "") ? selectedRoles + $("#" + selected[i]).html() : selectedRoles + ", " + $("#" + selected[i]).html();
+                                            }
+                                            $(".selected_roles").empty().html(selectedRoles);
+                                            console.log(selected);
+                                            if (checked == true) {
+                                                var roleid = $(option).val();
+                                                fetchRolePermissions(roleid);
+                                            }
+                                        }
+                                    });
+                                }, 50);
+
+                                var usersArray = '';
+                                var filteredUsers = '';
+                                $(document).ready(function () {
+                                    String.prototype.replaceAll = function (search, replacement) {
+                                        var target = this;
+                                        return target.replace(new RegExp(search, 'g'), replacement);
+                                    };
+                                    usersArray = [{ "id": "12dbc54f-baff-494d-89be-9d8f2079b26e", "username": "amit@5yinc.com", "email": "amit@5yinc.com", "deleted": false, "createdOn": "2019-10-03T13:21:21.675041+00:00", "lastModifiedOn": "2019-10-03T13:21:21.675042+00:00", "roles": [{ "role": { "id": "0cf80c38-8735-4ef3-b971-f37fc4c52218", "name": "Super Admin", "deleted": false, "rank": 1, "isDefault": true } }], "firstName": "12345678Amit", "lastName": "C", "instanceId": null }];
+                                    $("#home").removeClass("active");
+                                    $("#roleManagement").removeClass("active");
+                                    $("#userManagement").removeClass("active");
+                                    $("#permissionManagement").addClass("active");
+                                });
+                                function rolesTab(val) {
+                                    if (!$(val).children().hasClass("active")) {
+                                        $(".nav-item").children().find('a').removeClass("active");
+                                        $(val).children().find('a').addClass("active");
+                                        location.href = "/Permissions/Index";
+                                    }
+                                }
+                                function usersTab(val) {
+                                    if (!$(val).children().hasClass("active")) {
+                                        $(".nav-item").children().find('a').removeClass("active");
+                                        $(val).children().find('a').addClass("active");
+                                        location.href = window.location.origin + "/Permissions/Users";
+                                    }
+                                }
+                                function modulesTab(val) {
+                                    if (!$(val).children().find('a').hasClass("active")) {
+                                        $(".nav-item").children().find('a').removeClass("active");
+                                        $(val).children().find('a').addClass("active");
+                                        location.href = window.location.origin + "/Permissions/Modules";
+                                    }
+                                }
+                                function filterUsers() {
+                                    filteredUsers = $.grep(usersArray, function (el) {
+                                        return (el.FirstName.toLowerCase().startsWith($("#searchUsers").val()) || el.LastName.toLowerCase().startsWith($("#searchUsers").val()))
+                                    });
+                                    if (filteredUsers != "") {
+                                        if (filteredUsers.length > 0) {
+                                            $("#permissions-list").empty();
+                                            for (var i = 0; i < filteredUsers.length; i++) {
+                                                var myRoles = "";
+                                                if (filteredUsers[i].Roles.length > 0) {
+                                                    for (var j = 0; j < filteredUsers[i].Roles.length; j++) {
+                                                        if (myRoles == "") {
+                                                            myRoles = filteredUsers[i].Roles[j].Role.Name;
+                                                        }
+                                                        else {
+                                                            myRoles += "," + filteredUsers[i].Roles[j].Role.Name;
+                                                        }
+                                                    }
+                                                }
+                                                $("#permissions-list").append('<li class="list-group-item" id="' + filteredUsers[i].Id + '" lastname="' + filteredUsers[i].LastName + '" firstname="' + filteredUsers[i].FirstName + '" onclick="fetchModules(this);" roles="' + myRoles + '"><a href="#"><i class="fas fa-user"></i> ' + filteredUsers[i].LastName + ' , ' + filteredUsers[i].FirstName + '</a></li>');
+                                            }
+                                        }
+                                    }
+                                    if ($("#searchUsers").val() == "") {
+                                        $(".list-group-item").first().trigger("click");
+                                    }
+                                }
+                                function expand() {
+                                    $("#modules").children().find('ul').removeClass("d-none").addClass("d-block");
+                                    $("#collapseAll").removeClass("d-none");
+                                    $("#expandAll").addClass("d-none");
+                                }
+                                function collapse() {
+                                    $("#modules").children().find('ul').addClass("d-none").removeClass("d-block");
+                                    $("#expandAll").removeClass("d-none");
+                                    $("#collapseAll").addClass("d-none");
+                                }
+                                function viewClick(val) {
+                                    if (!$(val).hasClass("active")) {
+                                        $("#view-edit-toggle").children().find('label').removeClass("active");
+                                        $(val).addClass("active");
+                                        location.href = window.location.origin + "/Permissions/Users";
+                                    }
+                                }
+                                function editClick(val) {
+                                    if (!$(val).hasClass("active")) {
+                                        $("#view-edit-toggle").children().find('label').removeClass("active");
+                                        $(val).addClass("active");
+                                        location.href = window.location.origin + "/Permissions/EditUserPermissions";
+                                    }
+                                }
+
+                                var SelectedRolePermissions = {};
+                                function fetchRolePermissions(id) {
+                                    try {
+                                        if (id != undefined && id != null && id != "") {
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: window.location.origin + "/Permissions/GetRolePermissions?selectedRoleId=" + id,
+                                                success: function (response) {
+                                                    if (response != null && response != undefined && response.OwnerId != null) {
+                                                        SelectedRolePermissions[response.OwnerId] = response;
+                                                        PaintPermissions(response)
+                                                    }
+                                                }
+                                            }).fail(function (response, textStatus, errorThrown) {
+                                                displayDialog({ Success: false, Message: response.responseText });
+                                            });
+                                        }
+                                    }
+                                    catch (err) {
+                                        console.log("Error in fetchRolePermissions:" + err.message);
+                                    }
+                                }
+                                function PaintPermissions(data) {
+                                    try {
+                                        if (data != undefined && data != null) {
+                                            if (data != null && data.Modules != null && data.Modules.length > 0) {
+                                                for (var i = 0; i < data.Modules.length; i++) {
+                                                    $("#" + data.Modules[i].ModuleId).prop("checked", true);
+                                                }
+                                            }
+                                            if (data != null && data.Operations != null && data.Operations.length > 0) {
+                                                for (var i = 0; i < data.Operations.length; i++) {
+                                                    $("#" + data.Operations[i].OperationId).prop("checked", true);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch (err) {
+                                        console.log("Error in PaintPermissions:" + err.message);
+                                    }
+                                }
+                            </script>
+                            <script type="text/html" id="module_container_initial_template">
+                                <div class="module col-md-6">
+                                    <strong id="{Id}" code="{Code}"><i class="fas fa-check-circle mr-2{IsActiveClass}"></i>{Name}</strong>
+                                    {ChildOperationsList}
+                                    {ChildModulesList}
+                                </div>
+                            </script>
+                            <script type="text/html" id="ModuleContainer_template">
+                                <ul class="mt-2 d-none js_module_container">
+                                    {ChildModulesList}
+                                </ul>
+                            </script>
+                            <script type="text/html" id="OperationsContainer_template">
+                                <ul class="mt-2 d-none js_op_container">
+                                    {ChildOperationsList}
+                                </ul>
+                            </script>
+                            <script type="text/html" id="Module_Template">
+                                <li class="js_module{ParentChildClass}">
+                                    <strong id="{Id}" code="{Code}"><i class="fas fa-check-circle mr-2{IsActiveClass}"></i>{Name}</strong>
+                                    <ul class="mt-2 d-none js_op_container">
+                                        {ChildOperationsList}
+                                    </ul>
+                                    {ChildModulesList}
+                                </li>
+                            </script>
+                            <script type="text/html" id="Edit_Operation_Template">
+                                <li class="js_operation{ParentChildClass}">
+                                    <input type="checkbox" {Checked} class="mr-2{Checked}" id="{Id}" code="{Code}">{Name}
+                                    {ChildOperationsList}
+                                </li>
+                            </script>
+                            <script type="text/html" id="View_Operation_Template">
+                                <li class="js_operation{ParentChildClass}">
+                                    <i class="fas fa-check-circle mr-2{IsActiveClass}"></i>{Name}
+                                    {ChildOperationsList}
+                                </li>
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-container" class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <style type="text/css">
+                                .js_op_container {
+                                    list-style-type: none;
+                                    padding-left: 10px;
+                                }
+
+                                .js_operation, .js_module {
+                                    list-style-type: none;
+                                }
+
+                                .js_module_container {
+                                    list-style-type: none;
+                                    padding-left: 10px;
+                                }
+
+                                .list-group-item.active {
+                                    z-index: 2;
+                                    color: #fff;
+                                    background-color: #1d1c1d;
+                                    border-color: #f4f5f7;
+                                }
+
+                                    .list-group-item.active a {
+                                        color: #fff;
+                                    }
+
+                                .list-group-item a {
+                                    color: #000000;
+                                }
+                            </style>
+                            <script type="text/javascript">
+                                var errorMessage = "";
+                                var successMessage = "";
+                            </script>
+                            <div id="main" class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 p-0">
+                                        <h4 class="pt-2">
+                                            Permissions / Edit User Permissions
+                                            <span id="view-edit-toggle">
+                                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                    <label class="btn btn-secondary btn-sm" onclick="viewClick(this);" style="cursor:pointer;">
+                                                        <input type="radio" name="options" id="option1" autocomplete="off"> View
+                                                    </label>
+                                                    <label class="btn btn-secondary btn-sm active" onclick="editClick(this);" style="cursor:pointer;">
+                                                        <input type="radio" name="options" id="option2" autocomplete="off" checked=""> Edit
+                                                    </label>
+                                                </div>
+                                            </span>
+                                        </h4>
+                                    </div>
+                                    <!-- Custom Coding Starts Here -->
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12 mt-1 p-0">
+                                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                    <li class="nav-item ml-auto mb-1">
+                                                        <a href="/Permissions/Users" class="btn-danger d-inline">Cancel</a>
+                                                        <a href="#" class="btn-primary d-inline" onclick="savePermissions()"> Save</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 mt-3">
+                                                <input type="hidden" id="userId" value="12dbc54f-baff-494d-89be-9d8f2079b26e">
+                                                <div class="users_listing" id="permissions-list">
+                                                    <ul>
+                                                        <h4 class="pl-2 pr-2 pt-2 pb-2 text-center">Users</h4>
+                                                        <li>
+                                                            <a class="active" id="12dbc54f-baff-494d-89be-9d8f2079b26e" lastname="C" firstname="12345678Amit" roles="Super Admin" href="/Permissions/FetchRolePermissions?id=12dbc54f-baff-494d-89be-9d8f2079b26e&amp;name=12345678Amit%20C&amp;mode=user&amp;operation=view"> <i class="far fa-user" aria-hidden="true"></i> 12345678Amit C </a>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9 pl-4 pr-0">
+                                                <div class="user_details">
+                                                    <div class="user_details_header">
+                                                        <div class="row">
+                                                            <div class="col-md-4 pl-4">
+                                                                <h4>Select Roles</h4>
+                                                                <span class="multiselect-native-select">
+                                                                    <select id="multi-select-roles" multiple="multiple">
+                                                                        <option selected="" value="0cf80c38-8735-4ef3-b971-f37fc4c52218" id="0cf80c38-8735-4ef3-b971-f37fc4c52218">Super Admin</option>
+                                                                        <option value="e3d74034-1f77-4dc7-aac4-840ccb4ed9ad" id="e3d74034-1f77-4dc7-aac4-840ccb4ed9ad">Admin</option>
+                                                                        <option value="ff2b5da1-0606-4e3d-b2a9-982efb197e44" id="ff2b5da1-0606-4e3d-b2a9-982efb197e44">User</option>
+                                                                    </select>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <h4>Selected Roles</h4>
+                                                                    </div>
+                                                                    <div class="col-md-12 selected_roles">
+                                                                        Super Admin
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="user_details_body">
+                                                        <div class="row m-0">
+                                                            <div class="col-md-12">
+                                                                <h4>Modules &amp; Permissions</h4>
+                                                                <div class="row mt-4" id="modules">
+                                                                    <ul class="modules-list-edit">
+                                                                        <!--Assigned Modules -->
+                                                                        <!-- PartiallyAssignedModules -->
+                                                                        <!-- NotAssignedModules -->
+                                                                        <li class="module js_module js_module_child">
+                                                                            <div class="li-body">
+                                                                                <div class="col-sm-12">
+                                                                                    <div class="modules">
+                                                                                        <input disabled="" id="4a851397-73d1-4386-b71a-dedd9bd429ef" name="My Profile" code="MYPFL" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked">
+                                                                                        <label for="4a851397-73d1-4386-b71a-dedd9bd429ef"><i class="fas fa-cube" aria-hidden="true"></i> My Profile</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <ul class="mt-2 js_op_container">
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="009c2759-9061-451f-9ce1-e61f504e8cac" opname="View" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="PVIEW" isdefault="isDefault">
+                                                                                                <label for="009c2759-9061-451f-9ce1-e61f504e8cac"><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="1d98fe4b-222b-41da-9290-8c609dab322d" opname="Upload" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="PUPLD" isdefault="isDefault">
+                                                                                                <label for="1d98fe4b-222b-41da-9290-8c609dab322d"><i class="fas fa-cog" aria-hidden="true"></i> Upload</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="9aa628cf-2141-43a9-9ec0-00d298776e4a" opname="Edit" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="PEDIT" isdefault="isDefault">
+                                                                                                <label for="9aa628cf-2141-43a9-9ec0-00d298776e4a"><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="be2f24f5-aff5-4414-a06e-fd00ab4a0f47" opname="Change Password" moduleid="4a851397-73d1-4386-b71a-dedd9bd429ef" code="CHPWD" isdefault="isDefault">
+                                                                                                <label for="be2f24f5-aff5-4414-a06e-fd00ab4a0f47"><i class="fas fa-cog" aria-hidden="true"></i> Change Password</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li class="module js_module js_module_child">
+                                                                            <div class="li-body">
+                                                                                <div class="col-sm-12">
+                                                                                    <div class="modules">
+                                                                                        <input disabled="" id="63baad66-c856-4df4-b7ff-68ea3b45867f" name="User" code="USERS" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked">
+                                                                                        <label for="63baad66-c856-4df4-b7ff-68ea3b45867f"><i class="fas fa-cube" aria-hidden="true"></i> User</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <ul class="mt-2 js_op_container">
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="13b56995-db20-4ea8-94ad-a7fa6cbf0ca4" opname="Details" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UDTLS" isdefault="isDefault">
+                                                                                                <label for="13b56995-db20-4ea8-94ad-a7fa6cbf0ca4"><i class="fas fa-cog" aria-hidden="true"></i> Details</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="3b4a9218-21b2-45d1-a34a-b996942499c4" opname="View" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UVIEW" isdefault="isDefault">
+                                                                                                <label for="3b4a9218-21b2-45d1-a34a-b996942499c4"><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="453061c9-a1f7-4c35-b76e-4598ea65a832" opname="Edit" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UEDIT" isdefault="isDefault">
+                                                                                                <label for="453061c9-a1f7-4c35-b76e-4598ea65a832"><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="6b2aba5b-2ec3-44bd-8337-aad218e906fe" opname="Activate" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UACTV" isdefault="isDefault">
+                                                                                                <label for="6b2aba5b-2ec3-44bd-8337-aad218e906fe"><i class="fas fa-cog" aria-hidden="true"></i> Activate</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="81cb6843-2b3c-4a03-a8ec-f3f0fc0104fa" opname="Delete" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UDLTE" isdefault="isDefault">
+                                                                                                <label for="81cb6843-2b3c-4a03-a8ec-f3f0fc0104fa"><i class="fas fa-cog" aria-hidden="true"></i> Delete</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="97d3f211-9d1b-45ee-a423-0ed0317a2bba" opname="Deactivate" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UDACT" isdefault="isDefault">
+                                                                                                <label for="97d3f211-9d1b-45ee-a423-0ed0317a2bba"><i class="fas fa-cog" aria-hidden="true"></i> Deactivate</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="cc7c595a-4325-421b-8fff-160ffd16e791" opname="Reset Password" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="RSPWD" isdefault="isDefault">
+                                                                                                <label for="cc7c595a-4325-421b-8fff-160ffd16e791"><i class="fas fa-cog" aria-hidden="true"></i> Reset Password</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="d61cfbc3-6c57-4020-92f9-10584c546a7c" opname="Add" moduleid="63baad66-c856-4df4-b7ff-68ea3b45867f" code="UUADD" isdefault="isDefault">
+                                                                                                <label for="d61cfbc3-6c57-4020-92f9-10584c546a7c"><i class="fas fa-cog" aria-hidden="true"></i> Add</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li class="module js_module js_module_child">
+                                                                            <div class="li-body">
+                                                                                <div class="col-sm-12">
+                                                                                    <div class="modules">
+                                                                                        <input disabled="" id="a3688d07-b511-4999-8aab-b6fa25c6a563" name="Roles" code="ROLES" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked">
+                                                                                        <label for="a3688d07-b511-4999-8aab-b6fa25c6a563"><i class="fas fa-cube" aria-hidden="true"></i> Roles</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <ul class="mt-2 js_op_container">
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="2e565a78-b3b3-4e46-94f5-dcc66d9280d2" opname="Delete" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RDLTE" isdefault="isDefault">
+                                                                                                <label for="2e565a78-b3b3-4e46-94f5-dcc66d9280d2"><i class="fas fa-cog" aria-hidden="true"></i> Delete</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="33c4dba1-5f06-4840-838b-ba7503a3e017" opname="View" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RVIEW" isdefault="isDefault">
+                                                                                                <label for="33c4dba1-5f06-4840-838b-ba7503a3e017"><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="8d111596-2673-4548-9cb1-01ed165b0486" opname="Details" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RDTLS" isdefault="isDefault">
+                                                                                                <label for="8d111596-2673-4548-9cb1-01ed165b0486"><i class="fas fa-cog" aria-hidden="true"></i> Details</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="9a6bb141-c87a-4c76-9567-55b8a9c15f4e" opname="Activate" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RACTV" isdefault="isDefault">
+                                                                                                <label for="9a6bb141-c87a-4c76-9567-55b8a9c15f4e"><i class="fas fa-cog" aria-hidden="true"></i> Activate</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="b66e367e-2e6a-431c-bae2-be2c3cc2a741" opname="Deactivate" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RDACT" isdefault="isDefault">
+                                                                                                <label for="b66e367e-2e6a-431c-bae2-be2c3cc2a741"><i class="fas fa-cog" aria-hidden="true"></i> Deactivate</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="c56b5f93-e1f8-4ce2-8313-0f7b42ba3fef" opname="Add" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="RRADD" isdefault="isDefault">
+                                                                                                <label for="c56b5f93-e1f8-4ce2-8313-0f7b42ba3fef"><i class="fas fa-cog" aria-hidden="true"></i> Add</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="e1253c63-13b6-4e96-a0e2-5398a47e5a35" opname="Edit" moduleid="a3688d07-b511-4999-8aab-b6fa25c6a563" code="REDIT" isdefault="isDefault">
+                                                                                                <label for="e1253c63-13b6-4e96-a0e2-5398a47e5a35"><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </li>
+                                                                        <li class="module js_module js_module_child">
+                                                                            <div class="li-body">
+                                                                                <div class="col-sm-12">
+                                                                                    <div class="modules">
+                                                                                        <input disabled="" id="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" name="Permissions" code="PRMNS" parentmoduleid="" isdefault="isDefault" type="checkbox" checked="checked">
+                                                                                        <label for="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be"><i class="fas fa-cube" aria-hidden="true"></i> Permissions</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <ul class="mt-2 js_op_container">
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="03e79e43-9dd1-4ea4-8322-598618993e72" opname="View" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PVIEW" isdefault="isDefault">
+                                                                                                <label for="03e79e43-9dd1-4ea4-8322-598618993e72"><i class="fas fa-cog" aria-hidden="true"></i> View</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="49b90e25-17be-4eca-9af8-67bf1eb96955" opname="Edit" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PEDIT" isdefault="isDefault">
+                                                                                                <label for="49b90e25-17be-4eca-9af8-67bf1eb96955"><i class="fas fa-cog" aria-hidden="true"></i> Edit</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="84b45de8-61e7-4f40-a973-4e2a2fd1a954" opname="Delete" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PDLTE" isdefault="isDefault">
+                                                                                                <label for="84b45de8-61e7-4f40-a973-4e2a2fd1a954"><i class="fas fa-cog" aria-hidden="true"></i> Delete</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="js_operation js_op_child">
+                                                                                    <div class="li-body">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="checkboxwrapper operations">
+                                                                                                <input disabled="" type="checkbox" checked="checked" id="c25c1690-62f7-4a3b-841c-4a8bdb440bec" opname="Add" moduleid="ceb86db9-d2c2-4bcb-85dd-070f3b3ae4be" code="PPADD" isdefault="isDefault">
+                                                                                                <label for="c25c1690-62f7-4a3b-841c-4a8bdb440bec"><i class="fas fa-cog" aria-hidden="true"></i> Add</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="AddUser" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-md" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel">
+                                                New User
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="mt-3" method="post" action="/Permissions/AddUser" novalidate="novalidate">
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label for="FirstName">First Name</label>
+                                                        <input class="form-control form-control-sm" autofocus="" type="text" data-val="true" data-val-required="The First Name field is required." id="FirstName" name="FirstName" value="">
+                                                        <span class="text-danger field-validation-valid" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label for="LastName">Last Name</label>
+                                                        <input class="form-control form-control-sm" type="text" data-val="true" data-val-required="The Last Name field is required." id="LastName" name="LastName" value="">
+                                                        <span class="text-danger field-validation-valid" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label for="Email">Email</label>
+                                                        <input class="form-control form-control-sm" type="email" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="Email" name="Email" value="">
+                                                        <span class="text-danger field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label for="Password">Password</label>
+                                                        <input class="form-control form-control-md" type="password" data-val="true" data-val-length="The Password must be at least 6 and at max 100 characters long." data-val-length-max="100" data-val-length-min="6" data-val-required="The Password field is required." id="Password" name="Password">
+                                                        <span class="text-danger field-validation-valid" data-valmsg-for="Password" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn-primary"> Save</button>
+                                                </div>
+                                                <input name="__RequestVerificationToken" type="hidden" value="CfDJ8J_iQmgajAhCjZvQntJoOUfAZZs6Xe2vaKabS8D3gSGgGgx3HgKJXXEmWnUwFHYnjZXJLfBUdXmtDJzBDsEAEWRlfl6noOKj50rMjWGckc2kMaNkehGOa5nHOfssbylkrx2ahQwfp3EVPv5dxu_mDGh6o0CMnDjHs7ktr2Zlt1gOoQdFt8EDG8EQkq1cTIbPdA">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+
+                                setTimeout(function () {
+                                    $('#multi-select-roles').multiselect({
+                                        includeSelectAllOption: false,
+                                        onChange: function (option, checked, select) {
+
+                                            var roles = $('#multi-select-roles option:selected');
+                                            var selected = [];
+                                            $(roles).each(function (index, brand) {
+                                                selected.push($(this).val());
+                                            });
+                                            var selectedRoles = "";
+                                            for (var i = 0; i < selected.length; i++) {
+                                                selectedRoles = (selectedRoles != null && selectedRoles == "") ? selectedRoles + $("#" + selected[i]).html() : selectedRoles + ", " + $("#" + selected[i]).html();
+                                            }
+                                            $(".selected_roles").empty().html(selectedRoles);
+                                            console.log(selected);
+                                            if (checked == true) {
+                                                var roleid = $(option).val();
+                                                fetchRolePermissions(roleid);
+                                            }
+                                            else {
+                                                $("#modules").find("input[type='checkbox']").each(function (index, element) {
+                                                    $(element).prop("checked", false);
+                                                    delete SelectedRolePermissions[$(option).val()];
+                                                    $.each(SelectedRolePermissions, function (key, value) {
+                                                        PaintPermissions(value);
+                                                    });
+                                                });
+                                            }
+                                        }
+                                    });
+                                }, 50);
+                                $(function () {
+                                    //The passed argument has to be at least a empty object or a object with your desired options
+                                    $(".users_listing").overlayScrollbars({});
+                                });
+                                $(function () {
+                                    //The passed argument has to be at least a empty object or a object with your desired options
+                                    $(".user_details_body").overlayScrollbars({});
+                                });
+
+                                var usersArray = '', filteredUsers = '';
+                                var name = '', roles = '';
+                                $(document).ready(function () {
+                                    String.prototype.replaceAll = function (search, replacement) {
+                                        var target = this;
+                                        return target.replace(new RegExp(search, 'g'), replacement);
+                                    };
+                                    usersArray = [{ "id": "12dbc54f-baff-494d-89be-9d8f2079b26e", "username": "amit@5yinc.com", "email": "amit@5yinc.com", "deleted": false, "createdOn": "2019-10-03T13:21:21.675041+00:00", "lastModifiedOn": "2019-10-03T13:21:21.675042+00:00", "roles": [{ "role": { "id": "0cf80c38-8735-4ef3-b971-f37fc4c52218", "name": "Super Admin", "deleted": false, "rank": 1, "isDefault": true } }], "firstName": "12345678Amit", "lastName": "C", "instanceId": null }];
+                                    $("#home").removeClass("active");
+                                    $("#roleManagement").removeClass("active");
+                                    $("#userManagement").removeClass("active");
+                                    $("#permissionManagement").addClass("active");
+                                    if (errorMessage != "") {
+                                        displayDialog({ Success: false, Message: errorMessage });
+                                    }
+                                    if (successMessage != "") {
+                                        displayDialog({ Success: true, Message: successMessage });
+                                    }
+                                });
+                                $(document).off("click", ".js_operation input[type='checkbox']");
+                                $(document).on("click", ".js_operation input[type='checkbox']", function (event) {
+
+                                    var element = $(event.currentTarget).closest(".js_operation");
+                                    var checkboxValue = $(event.currentTarget).prop("checked");
+                                    var operationId = $(event.currentTarget).attr("id");
+
+                                    //operation has children check or un check all
+                                    if (operationId == $(element).children(".li-body:first").find("input[type='checkbox']").attr("id")) {
+                                        $(element).find(".js_op_child,.js_op_parent").each(function (index, elm) {
+                                            $(elm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                        });
+                                    }
+                                    if ($(element).parents(".js_operation") != undefined && $(element).parents(".js_operation").length > 0) {
+                                        $(element).parents(".js_operation").each(function (index, el) {
+                                            if (operationId != $(el).children(".li-body:first").find("input[type='checkbox']").attr("id")) {
+                                                if ($(el).find(".js_op_container input[type='checkbox']:checked") != undefined && $(el).find(".js_op_container input[type='checkbox']:checked").length == 0) {
+                                                    if (checkboxValue == false) {
+                                                        $(el).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                                else {
+                                                    if (checkboxValue == true) {
+                                                        $(el).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                            }
+
+                                            if ($(el).parents(".js_module") != undefined && $(el).parents(".js_module").length > 0) {
+                                                $(el).parents(".js_module").each(function (index, modelm) {
+                                                    if ($(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked") != undefined && $(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked").length == 0) {
+                                                        if (checkboxValue == false) {
+                                                            $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                        }
+                                                    }
+                                                    else {
+                                                        if (checkboxValue == true) {
+                                                            $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                    }
+                                    else {
+                                        if ($(element).parents(".js_module_parent") != undefined && $(element).parents(".js_module_parent").length > 0) {
+                                            $(element).parents(".js_module_parent").each(function (index, modelm) {
+                                                if ($(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked") != undefined && $(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked").length == 0) {
+                                                    if (checkboxValue == false) {
+                                                        $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                                else {
+                                                    if (checkboxValue == true) {
+                                                        $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                });
+
+                                $(document).off("click", ".js_module .li-body input[type='checkbox']");
+                                $(document).on("click", ".js_module .li-body input[type='checkbox']", function (event) {
+
+
+                                    var element = $(event.currentTarget).closest(".js_module");
+                                    var checkboxValue = $(event.currentTarget).prop("checked");
+                                    var moduleId = $(event.currentTarget).attr("id");
+
+                                    //operation has children check or un check all
+                                    if (moduleId == $(element).children(".li-body:first").find("input[type='checkbox']").attr("id")) {
+                                        $(element).find(".js_module,.js_operation").each(function (index, elm) {
+                                            $(elm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                        });
+                                    }
+                                    if ($(element).parents(".js_module") != undefined && $(element).parents(".js_module").length > 0) {
+                                        $(element).parents(".js_module").each(function (index, el) {
+                                            if (moduleId != $(el).children(".li-body:first").find("input[type='checkbox']").attr("id")) {
+                                                if ($(el).find("input[type='checkbox']:checked") != undefined && $(el).find("input[type='checkbox']:checked").length == 0) {
+                                                    if (checkboxValue == false) {
+                                                        $(el).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                                else {
+                                                    if (checkboxValue == true) {
+                                                        $(el).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                            }
+
+                                            if ($(el).parents(".js_module_parent") != undefined && $(el).parents(".js_module_parent").length > 0) {
+                                                $(el).parents(".js_module_parent").each(function (index, modelm) {
+                                                    if ($(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked") != undefined && $(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked").length == 0) {
+                                                        if (checkboxValue == false) {
+                                                            $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                        }
+                                                    }
+                                                    else {
+                                                        if (checkboxValue == true) {
+                                                            $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                    }
+                                    else {
+                                        if ($(element).parents(".js_module") != undefined && $(element).parents(".js_module").length > 0) {
+                                            $(element).parents(".js_module").each(function (index, modelm) {
+                                                if ($(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked") != undefined && $(modelm).children(".js_op_container,.js_module_container").find("input[type='checkbox']:checked").length == 0) {
+                                                    if (checkboxValue == false) {
+                                                        $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                                else {
+                                                    if (checkboxValue == true) {
+                                                        $(modelm).children(".li-body:first").find("input[type='checkbox']").prop("checked", checkboxValue);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                                function rolesTab(val) {
+                                    if (!$(val).children().find('a').hasClass("active")) {
+                                        $(".nav-item").children().find('a').removeClass("active");
+                                        $(val).children().find('a').addClass("active");
+                                        location.href = window.location.origin + "/Permissions/Index";
+                                    }
+                                }
+                                function usersTab(val) {
+                                    if (!$(val).children().find('a').hasClass("active")) {
+                                        $(".nav-item").children().find('a').removeClass("active");
+                                        $(val).children().find('a').addClass("active");
+                                        location.href = window.location.origin + "/Permissions/Users";
+                                    }
+                                }
+                                function modulesTab(val) {
+                                    if (!$(val).children().find('a').hasClass("active")) {
+                                        $(".nav-item").children().find('a').removeClass("active");
+                                        $(val).children().find('a').addClass("active");
+                                        location.href = window.location.origin + "/Permissions/Modules";
+                                    }
+                                }
+                                function filterUsers() {
+                                    filteredUsers = $.grep(usersArray, function (el) {
+                                        return (el.FirstName.toLowerCase().startsWith($("#searchUsers").val()) || el.LastName.toLowerCase().startsWith($("#searchUsers").val()))
+                                    });
+                                    if (filteredUsers != "") {
+                                        if (filteredUsers.length > 0) {
+                                            $("#permissions-list").empty();
+                                            for (var i = 0; i < filteredUsers.length; i++) {
+                                                var myRoles = "";
+                                                if (filteredUsers[i].Roles.length > 0) {
+                                                    for (var j = 0; j < filteredUsers[i].Roles.length; j++) {
+                                                        if (myRoles == "") {
+                                                            myRoles = filteredUsers[i].Roles[j].Role.Name;
+                                                        }
+                                                        else {
+                                                            myRoles += "," + filteredUsers[i].Roles[j].Role.Name;
+                                                        }
+                                                    }
+                                                }
+                                                $("#permissions-list").append('<li class="list-group-item" id="' + filteredUsers[i].Id + '" lastname="' + filteredUsers[i].LastName + '" firstname="' + filteredUsers[i].FirstName + '" onclick="fetchModules(this);" roles="' + myRoles + '"><a href="#"><i class="fas fa-user"></i> ' + filteredUsers[i].LastName + ' , ' + filteredUsers[i].FirstName + '</a></li>');
+                                            }
+                                            $("#permissions-list").append('<li class="list-group-item list-group-item-last"><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#AddUser"><i class="fas fa-plus-circle"></i> Add User</button></li>');
+                                        }
+                                    }
+                                    if ($("#searchUsers").val() == "") {
+                                        $(".list-group-item").first().trigger("click");
+                                    }
+                                }
+                                function expand() {
+                                    $("#modules").children().find('ul.js_op_container,ul.js_module_container').removeClass("d-none").addClass("d-block");
+                                    $("#collapseAll").removeClass("d-none");
+                                    $("#expandAll").addClass("d-none");
+                                }
+                                function collapse() {
+                                    $("#modules").children().find('ul.js_op_container,ul.js_module_container').addClass("d-none").removeClass("d-block");
+                                    $("#expandAll").removeClass("d-none");
+                                    $("#collapseAll").addClass("d-none");
+                                }
+                                function viewClick(val) {
+                                    if (!$(val).hasClass("active")) {
+                                        $("#view-edit-toggle").children().find('label').removeClass("active");
+                                        $(val).addClass("active");
+                                        location.href = window.location.origin + "/Permissions/Users";
+                                    }
+                                }
+                                function editClick(val) {
+                                    if (!$(val).hasClass("active")) {
+                                        $("#view-edit-toggle").children().find('label').removeClass("active");
+                                        $(val).addClass("active");
+                                        location.href = window.location.origin + "/Permissions/EditUserPermissions";
+                                    }
+                                }
+
+                                function savePermissions() {
+
+                                    $("#loadingPanel").removeClass("d-none");
+                                    var userId = $("#userId").val();
+                                    var data = {};
+                                    data.OwnerId = userId;
+                                    data.Type = "2";
+                                    data.Modules = [];
+                                    data.Operations = [];
+                                    var OperationsArray = new Array();
+                                    var modulesArray = new Array();
+                                    var moduleTempArray = new Array();
+                                    var Permissions = new Array();
+                                    var ops = [];
+                                    ops = $("ul.js_op_container").find('li.js_operation');
+                                    if (ops.length > 0) {
+                                        for (var j = 0; j < ops.length; j++) {
+                                            var cOp = ops[j];
+                                            if ($(cOp).children().find("input[type='checkbox']").is(":checked")) {
+                                                var opt = new Object();
+                                                opt.OperationId = $(cOp).children().find("input[type='checkbox']").attr("id");
+                                                opt.Code = $(cOp).children().find("input[type='checkbox']").attr("code");
+                                                opt.Name = $(cOp).children().find("input[type='checkbox']").attr("opname");
+                                                opt.ModuleId = $(cOp).children().find("input[type='checkbox']").attr("moduleid");
+                                                opt.ParentOperationId = $(cOp).children().find("input[type='checkbox']").attr("parentOperationId");
+                                                Permissions.push(opt);
+                                                OperationsArray.push(opt);
+                                                if ($.inArray(opt.ModuleId, moduleTempArray) == -1) {
+                                                    moduleTempArray.push(opt.ModuleId);
+                                                    var mod = $(cOp).closest(".js_module");
+                                                    var cMod = new Object();
+                                                    cMod.ModuleId = $(mod).find("input[type='checkbox']").attr("id");
+                                                    cMod.Code = $(mod).find("input[type='checkbox']").attr("code");
+                                                    cMod.Name = $(mod).find("input[type='checkbox']").attr("name");
+                                                    cMod.IsDefault = ($(mod).find("input[type='checkbox']").attr("isDefault") == "true" ? true : false);
+                                                    cMod.ParentModuleId = ($(mod).find("input[type='checkbox']").attr("parentModuleId") != undefined && $(mod).find("input[type='checkbox']").attr("parentModuleId") != "" ? $(mod).find("input[type='checkbox']").attr("parentModuleId") : null);
+                                                    modulesArray.push(cMod);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    for (var i = 0; i < OperationsArray.length; i++) {
+                                        var element = $("#" + OperationsArray[i].OperationId);
+                                        if ($(element).parents(".js_module") != undefined && $(element).parents(".js_module").length > 0) {
+                                            $(element).parents(".js_module").each(function (index, modelm) {
+                                                var mod = $(modelm).children(".li-body:first");
+                                                var parentmoduleId = $(mod).find("input[type='checkbox']").attr("parentModuleId");
+                                                var moduleId = $(mod).find("input[type='checkbox']").attr("id");
+                                                if (moduleId != undefined && moduleId != null && moduleId != "" && $.inArray(moduleId, moduleTempArray) == -1) {
+                                                    var cMod = new Object();
+                                                    cMod.ModuleId = $(mod).find("input[type='checkbox']").attr("id");
+                                                    cMod.Code = $(mod).find("input[type='checkbox']").attr("code");
+                                                    cMod.Name = $(mod).find("input[type='checkbox']").attr("name");
+                                                    cMod.IsDefault = ($(mod).find("input[type='checkbox']").attr("isDefault") == "true" ? true : false);
+                                                    cMod.ParentModuleId = ($(mod).find("input[type='checkbox']").attr("parentModuleId") != undefined && $(mod).find("input[type='checkbox']").attr("parentModuleId") != "" ? $(mod).find("input[type='checkbox']").attr("parentModuleId") : null);
+                                                    modulesArray.push(cMod);
+                                                    moduleTempArray.push(moduleId);
+                                                }
+                                            });
+                                        }
+                                    }
+                                    data.Modules = modulesArray;
+                                    data.Operations = OperationsArray;
+                                    data.Operations = OperationsArray;
+                                    var roles = $('#multi-select-roles option:selected');
+                                    var selected = [];
+                                    $(roles).each(function (index, brand) {
+                                        selected.push($(this).val());
+                                    });
+                                    var finalObject = { updateData: data, roles: selected };
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: window.location.origin + "/Permissions/UpdatePermissions",
+                                        contentType: 'application/json; charset=utf-8',
+                                        data: JSON.stringify(finalObject),
+                                        success: function (data) {
+                                            $("#loadingPanel").addClass("d-none");
+                                            if (data == "") {
+                                                displayDialog({ Success: false, Message: "Permissions updated successfully" });
+                                                window.location.href = window.location.origin + "/Permissions/Users";
+                                            }
+                                            else {
+                                                displayDialog({ Success: false, Message: data });
+                                            }
+                                        },
+                                        failure: function (data) {
+                                            displayDialog({ Success: false, Message: data });
+                                        }
+                                    });
+                                }
+                                var SelectedRolePermissions = {};
+                                function fetchRolePermissions(id) {
+                                    try {
+                                        if (id != undefined && id != null && id != "") {
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: window.location.origin + "/Permissions/GetRolePermissions?selectedRoleId=" + id,
+                                                success: function (response) {
+                                                    if (response != null && response != undefined && response.OwnerId != null) {
+                                                        SelectedRolePermissions[response.OwnerId] = response;
+                                                        PaintPermissions(response)
+                                                    }
+                                                }
+                                            }).fail(function (response, textStatus, errorThrown) {
+                                                displayDialog({ Success: false, Message: response.responseText });
+                                            });
+                                        }
+                                    }
+                                    catch (err) {
+                                        console.log("Error in fetchRolePermissions:" + err.message);
+                                    }
+                                }
+                                function PaintPermissions(data) {
+                                    try {
+                                        if (data != undefined && data != null) {
+                                            if (data != null && data.Modules != null && data.Modules.length > 0) {
+                                                for (var i = 0; i < data.Modules.length; i++) {
+                                                    $("#" + data.Modules[i].ModuleId).prop("checked", true);
+                                                }
+                                            }
+                                            if (data != null && data.Operations != null && data.Operations.length > 0) {
+                                                for (var i = 0; i < data.Operations.length; i++) {
+                                                    $("#" + data.Operations[i].OperationId).prop("checked", true);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch (err) {
+                                        console.log("Error in PaintPermissions:" + err.message);
+                                    }
+                                }
+                            </script>
+                            <script type="text/html" id="module_container_initial_template">
+                                <li class="module js_module">
+                                    <div class="li-body">
+                                        <div class="col-sm-12">
+                                            <div class="checkboxwrapper modules">
+                                                <input disabled id="{Id}" name="{Name}" code="{Code}" parentModuleId="{ParentModuleId}" isDefault="{IsDefault}" type="checkbox" {IsActiveClass}">
+                                                <label><i class="fas fa-cube"></i> {Name}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {ChildOperationsList}
+                                    {ChildModulesList}
+                                </li>
+                            </script>
+                            <script type="text/html" id="ModuleContainer_template">
+                                <ul class="mt-2 d-none js_module_container">
+                                    {ChildModulesList}
+                                </ul>
+                            </script>
+                            <script type="text/html" id="OperationsContainer_template">
+                                <ul class="mt-2 d-none js_op_container">
+                                    {ChildOperationsList}
+                                </ul>
+                            </script>
+                            <script type="text/html" id="Module_Template">
+                                <li class="module js_module{ParentChildClass}">
+                                    <div class="li-body">
+                                        <div class="col-sm-12">
+                                            <div class="checkboxwrapper modules">
+                                                <input disabled id="{Id}" name="{Name}" code="{Code}" parentModuleId="{ParentModuleId}" isDefault="{IsDefault}" type="checkbox" {Checked}">
+                                                <label><i class="fas fa-cube"></i> {Name}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="mt-2 d-none js_op_container">
+                                        {ChildOperationsList}
+                                    </ul>
+                                    {ChildModulesList}
+                                </li>
+                            </script>
+                            <script type="text/html" id="Edit_Operation_Template">
+                                <li class="js_operation{ParentChildClass}">
+                                    <div class="li-body">
+                                        <div class="col-sm-12">
+                                            <div class="checkboxwrapper operations">
+                                                <input type="checkbox" disabled {Checked} id="{Id}" opname="{Name}" moduleid="{ModuleId}" code="{Code}" parentOperationId="{ParentOperationId}" isDefault="{IsDefault}">
+                                                <label><i class="fas fa-cog"></i> {Name}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {ChildOperationsList}
+                                </li>
+                            </script>
+                            <script type="text/html" id="View_Operation_Template">
+                                <li class="js_operation{ParentChildClass}">
+                                    <div class="li-body">
+                                        <div class="col-sm-12">
+                                            <div class="checkboxwrapper operations">
+                                                <input type="checkbox" disabled {Checked} id="{Id}" opname="{Name}" moduleid="{ModuleId}" code="{Code}" parentOperationId="{ParentOperationId}" isDefault="{IsDefault}">
+                                                <label><i class="fas fa-cog"></i> {Name}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {ChildOperationsList}
+                                </li>
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(document).mouseup(function (e) {
+        var container = $("#action_div");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            container.hide();
+        }
+    });
+    $(function () {
+        $('#show_action_div').click(function () {
+            $('#action_div').show();
+            return false;
+        });
+    });
+    jQuery(function ($) {
+
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
+
+        $("#close-sidebar").click(function () {
+            $(".page-wrapper").removeClass("toggled");
+        });
+        $("#show-sidebar").click(function () {
+            $(".page-wrapper").addClass("toggled");
+        });
+    });
+
+    function InitiateLogout() {
+        DisplayConfirmationDialog({
+            Message: "Are you sure you want to logouxxt?",
+            CallFrom: "Logout",
+            OkData: { Label: "Yes", Data: null },
+            CancelData: { Label: "No", Data: null }
+        });
+    }
+
+</script>
